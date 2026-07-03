@@ -42,7 +42,7 @@ export default function Dashboard() {
       await axios.post(
         "/api/requests/send",
         {
-          receiverId,
+          receiverEmail: receiverId,
           message,
         },
         { withCredentials: true },
@@ -52,8 +52,11 @@ export default function Dashboard() {
       setMessage("");
 
       loadData();
-    } catch {
-      alert("Failed to send");
+    } catch (err) {
+      console.log("Status:", err.response?.status);
+      console.log("Data:", err.response?.data);
+
+      alert(err.response?.data?.error || "Failed to send");
     }
   };
 
@@ -105,7 +108,7 @@ export default function Dashboard() {
         <h2 className="font-semibold mb-3">Send Request</h2>
 
         <input
-          placeholder="Receiver ID"
+          placeholder="Receiver Email"
           className="border p-2 w-full mb-3 rounded"
           value={receiverId}
           onChange={(e) => setReceiverId(e.target.value)}
