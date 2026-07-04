@@ -1,0 +1,54 @@
+# ============================================================
+# Pod Disruption Budget (PDB)
+# ============================================================
+# Prevents too many Pods from being voluntarily evicted
+# during node maintenance, upgrades, or cluster operations.
+#
+# This helps maintain application availability.
+# ============================================================
+
+# ============================================================
+# Backend Pod Disruption Budget
+# ============================================================
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+
+metadata:
+  name: backend-pdb
+  namespace: request-system
+
+  labels:
+    app: backend
+
+spec:
+  # At least one backend Pod must remain available
+  minAvailable: 1
+
+  selector:
+    matchLabels:
+      app: backend
+
+---
+
+# ============================================================
+# Frontend Pod Disruption Budget
+# ============================================================
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+
+metadata:
+  name: frontend-pdb
+  namespace: request-system
+
+  labels:
+    app: frontend
+
+spec:
+  # At least one frontend Pod must remain available
+  minAvailable: 1
+
+  selector:
+    matchLabels:
+      app: frontend
