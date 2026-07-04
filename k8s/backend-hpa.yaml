@@ -1,0 +1,70 @@
+# ============================================================
+# Horizontal Pod Autoscaler (HPA) - Backend
+# ============================================================
+# Automatically scales the backend Deployment based on CPU usage.
+#
+# Requirements:
+# - Metrics Server must be installed in the Kubernetes cluster.
+# - Backend Deployment must define CPU requests.
+#
+# Scaling Policy:
+#   Minimum Replicas : 2
+#   Maximum Replicas : 10
+#   Target CPU Usage : 70%
+# ============================================================
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+
+metadata:
+  name: backend-hpa
+  namespace: request-system
+
+  labels:
+    app: backend
+    component: autoscaler
+
+spec:
+  # Deployment to scale
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend
+
+  # Minimum number of Pods
+  minReplicas: 2
+
+  # Maximum number of Pods
+  maxReplicas: 10
+
+  # Scale based on CPU utilization
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+
+  # Scale-up behavior
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0
+
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+
+      selectPolicy: Max
+
+    # Scale-down behavior
+    scaleDown:
+      stabilizationWindowSeconds: 300
+
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+
+      selectPolicy: Max
