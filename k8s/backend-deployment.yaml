@@ -1,0 +1,166 @@
+# ============================================================
+# Backend Deployment
+# ============================================================
+# Deploys the Request System backend application.
+#
+# Features:
+# - 2 replicas for high availability
+# - Rolling updates with zero downtime
+# - ConfigMap & Secret integration
+# - Health checks
+# - Resource requests & limits
+# - Non-root container support
+# ============================================================
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: backend
+  namespace: request-system
+
+  labels:
+    app: backend
+    component: api
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: backend
+
+  strategy:
+    type: RollingUpdate
+
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+
+  template:
+    metadata:
+      labels:
+        app: backend
+        component: api
+
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000"
+        prometheus.io/path: "/api/health"
+
+    spec:
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+
+                labelSelector:
+                  matchLabels:
+                    app: backend
+
+      containers:
+        - name: backend
+
+          image: shakthivelk24/requestsystem-backend:latest
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 5000
+
+          env:
+
+            # ==========================================
+            # ConfigMap
+            # ==========================================
+
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: request-system-config
+                  key: NODE_ENV
+
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: request-system-config
+                  key: PORT
+
+            - name: FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: request-system-config
+                  key: FRONTEND_URL
+
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: request-system-config
+                  key: LOG_LEVEL
+
+            # ==========================================
+            # Secrets
+            # ==========================================
+
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: request-system-secret
+                  key: JWT_SECRET
+
+            - name: MONGODB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: request-system-secret
+                  key: MONGODB_URL
+
+          resources:
+
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+
+            failureThreshold: 30
+            periodSeconds: 5
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+
+            capabilities:
+              drop:
+                - ALL
+
+      restartPolicy: Always
