@@ -1,0 +1,39 @@
+# ============================================================
+# Frontend Service
+# ============================================================
+# Provides a stable network endpoint for the frontend Pods.
+#
+# Why ClusterIP?
+# - Accessible only inside the Kubernetes cluster.
+# - NGINX Ingress forwards external traffic to this Service.
+# - This is the recommended setup for production.
+# ============================================================
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: frontend-service
+  namespace: request-system
+
+  labels:
+    app: frontend
+    component: web
+
+spec:
+  # Internal service
+  type: ClusterIP
+
+  # Select frontend Pods
+  selector:
+    app: frontend
+
+  ports:
+    - name: http
+      protocol: TCP
+
+      # Service Port
+      port: 80
+
+      # Container Port
+      targetPort: 80

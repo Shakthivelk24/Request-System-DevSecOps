@@ -1,0 +1,39 @@
+# ============================================================
+# Backend Service
+# ============================================================
+# A Service provides a stable network endpoint for backend Pods.
+#
+# Why ClusterIP?
+# - Exposes the backend only inside the Kubernetes cluster.
+# - The frontend and Ingress communicate with this service.
+# - Users cannot access the backend directly.
+# ============================================================
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: backend-service
+  namespace: request-system
+
+  labels:
+    app: backend
+    component: api
+
+spec:
+  # Internal Kubernetes service
+  type: ClusterIP
+
+  # Select all backend pods
+  selector:
+    app: backend
+
+  ports:
+    - name: http
+      protocol: TCP
+
+      # Service Port
+      port: 5000
+
+      # Container Port
+      targetPort: 5000
