@@ -1,0 +1,36 @@
+# ============================================================
+# Kubernetes Namespace
+# ============================================================
+# A Namespace provides logical isolation for all Kubernetes
+# resources belonging to the Request System application.
+#
+# Benefits:
+# - Resource isolation
+# - Easier management
+# - RBAC support
+# - Resource quotas
+# - Clean organization
+# ============================================================
+
+apiVersion: v1
+kind: Namespace
+
+metadata:
+  # Namespace name
+  name: request-system
+
+  labels:
+    # Application name
+    app: request-system
+
+    # Environment
+    environment: development
+
+    # Resource owner
+    managed-by: kubectl
+
+    # Project
+    project: secure-devops-pipeline
+
+  annotations:
+    description: "Namespace for the Request System application"
