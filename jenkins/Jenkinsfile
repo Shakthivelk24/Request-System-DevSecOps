@@ -76,10 +76,8 @@ pipeline {
             '''
 
                 sh """
-                mkdir -p ${TRIVY_REPORT_DIR}
-                mkdir -p ${ZAP_REPORT_DIR}
-                mkdir -p reports/sonarqube
-            """
+                  mkdir -p reports/sonarqube
+                """
             }
         }
         // ====================================================
