@@ -194,10 +194,10 @@ pipeline {
                         customLog('Building frontend Docker image...')
 
                         dockerBuild(
-                           imageName: FRONTEND_IMAGE,
-                           dockerfile: 'docker/frontend/Dockerfile',
-                           context: '.',
-                           imageVersion: IMAGE_TAG
+                           FRONTEND_IMAGE,
+                           'docker/frontend/Dockerfile',
+                           '.',
+                           IMAGE_TAG
                         )
                     }
                 }
@@ -207,10 +207,10 @@ pipeline {
                         customLog('Building backend Docker image...')
 
                         dockerBuild(
-                         imageName: BACKEND_IMAGE,
-                         dockerfile: 'docker/backend/Dockerfile',
-                         context: '.',
-                         imageVersion: IMAGE_TAG
+                          BACKEND_IMAGE,
+                          'docker/backend/Dockerfile',
+                          '.',
+                          IMAGE_TAG
                         )
                     }
                 }
