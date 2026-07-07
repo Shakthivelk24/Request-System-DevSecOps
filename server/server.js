@@ -5,6 +5,8 @@ import requestRoutes from "./routes/request.routes.js";
 import "dotenv/config.js";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
+import client from "prom-client";
+
 
 connectDB();
 const app = express();
@@ -22,6 +24,10 @@ app.get("/api/health", (req, res) => {
     status: "UP",
     service: "backend"
   });
+});
+app.get("/metrics", async (req, res) => {
+    res.set("Content-Type", client.register.contentType);
+    res.end(await client.register.metrics());
 });
 
 // Routes
