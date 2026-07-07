@@ -27,7 +27,7 @@ pipeline {
         TRIVY_REPORT_DIR = 'reports/trivy'
         
         // Application URL (after deployment)
-        APP_URL = 'http://localhost'
+        APP_URL = 'http://host.docker.internal'
     }
     options {
         // Add timestamps to all log lines for debugging
