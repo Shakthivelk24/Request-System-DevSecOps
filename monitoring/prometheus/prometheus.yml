@@ -1,0 +1,84 @@
+# ============================================================
+# Prometheus Configuration
+# ============================================================
+# Collects metrics from:
+# - Prometheus itself
+# - Node Exporter
+# - cAdvisor
+# - Kubernetes API
+# - Backend Application
+#
+# Scrape Interval:
+#   Every 15 seconds
+# ============================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# ============================================================
+# Alert Rules
+# ============================================================
+
+rule_files:
+  - /etc/prometheus/alerts/alert-rules.yml
+
+# ============================================================
+# Scrape Targets
+# ============================================================
+
+scrape_configs:
+
+  # ----------------------------------------------------------
+  # Prometheus
+  # ----------------------------------------------------------
+  - job_name: "prometheus"
+
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  # ----------------------------------------------------------
+  # Backend Application
+  # (Expose /metrics using prom-client)
+  # ----------------------------------------------------------
+  - job_name: "request-system-backend"
+
+    metrics_path: /metrics
+
+    static_configs:
+      - targets:
+          - backend-service.request-system.svc.cluster.local:5000
+
+  # ----------------------------------------------------------
+  # Node Exporter
+  # ----------------------------------------------------------
+  - job_name: "node-exporter"
+
+    static_configs:
+      - targets:
+          - node-exporter.monitoring.svc.cluster.local:9100
+
+  # ----------------------------------------------------------
+  # cAdvisor
+  # Container Metrics
+  # ----------------------------------------------------------
+  - job_name: "cadvisor"
+
+    static_configs:
+      - targets:
+          - cadvisor.monitoring.svc.cluster.local:8080
+
+  # ----------------------------------------------------------
+  # Kubernetes API Server
+  # ----------------------------------------------------------
+  - job_name: "kubernetes-api"
+
+    scheme: https
+
+    tls_config:
+      insecure_skip_verify: true
+
+    static_configs:
+      - targets:
+          - kubernetes.default.svc:443
