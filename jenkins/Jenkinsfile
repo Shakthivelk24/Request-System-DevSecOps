@@ -25,7 +25,7 @@ pipeline {
 
         // // Reports
         TRIVY_REPORT_DIR = 'reports/trivy'
-        // ZAP_REPORT_DIR = 'reports/zap'
+        ZAP_REPORT_DIR = 'reports/zap'
 
         // Application URL (after deployment)
         APP_URL = 'http://localhost'
@@ -475,8 +475,6 @@ pipeline {
                 """
                 }
             }
-
-            cleanWs()
         }
     }
 }
