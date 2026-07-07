@@ -469,8 +469,6 @@ pipeline {
                     docker rmi ${FRONTEND_IMAGE}:${IMAGE_TAG}
 
                     docker rmi ${BACKEND_IMAGE}:${IMAGE_TAG}
-
-                    docker system prune -f
                 """
                 }
             }
