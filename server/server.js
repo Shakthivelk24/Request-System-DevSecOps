@@ -9,6 +9,14 @@ import client from "prom-client";
 
 
 connectDB();
+// ======================================================
+// Prometheus Metrics
+// ======================================================
+
+const register = new client.Registry();
+client.collectDefaultMetrics({
+    register,
+});
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -26,8 +34,8 @@ app.get("/api/health", (req, res) => {
   });
 });
 app.get("/metrics", async (req, res) => {
-    res.set("Content-Type", client.register.contentType);
-    res.end(await client.register.metrics());
+    res.set("Content-Type", register.contentType);
+    res.end(await register.metrics());
 });
 
 // Routes
