@@ -1,0 +1,18 @@
+Git
+GitHub
+Pipeline
+Pipeline: Stage View
+Docker Pipeline
+Credentials Binding
+SSH Agent
+Kubernetes CLI
+SonarQube Scanner
+HTML Publisher
+Workspace Cleanup
+Build Timeout
+Timestamper
+AnsiColor
+Prometheus Metrics
+OWASP Dependency-Check
+Role-based Authorization Strategy
+Email Extension
