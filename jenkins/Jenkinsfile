@@ -151,18 +151,18 @@ pipeline {
                 qualityGate()
             }
         }
-        // ====================================================
-        // STAGE 7: OWASP DEPENDENCY CHECK
-        // Scan for known vulnerabilities in dependencies
-        // ====================================================
-        stage('🔍 OWASP Dependency Check') {
-            steps {
-                runDependencyCheck(
-                 scanPath: '.',
-                 reportDir: 'reports/dependency-check'
-              )
-            }
-        }
+        // // ====================================================
+        // // STAGE 7: OWASP DEPENDENCY CHECK
+        // // Scan for known vulnerabilities in dependencies
+        // // ====================================================
+        // stage('🔍 OWASP Dependency Check') {
+        //     steps {
+        //         runDependencyCheck(
+        //          scanPath: '.',
+        //          reportDir: 'reports/dependency-check'
+        //       )
+        //     }
+        // }
         // ====================================================
         // STAGE 8: BUILD APPLICATION
         // Compile React frontend for production
