@@ -157,10 +157,10 @@ pipeline {
         // ====================================================
         stage('🔍 OWASP Dependency Check') {
             steps {
-                dependencyCheck(
-            scanPath: '.',
-            reportDir: 'reports/dependency-check'
-        )
+                runDependencyCheck(
+                 scanPath: '.',
+                 reportDir: 'reports/dependency-check'
+              )
             }
         }
         // ====================================================
