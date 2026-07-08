@@ -25,7 +25,7 @@ pipeline {
 
         // // Reports
         TRIVY_REPORT_DIR = 'reports/trivy'
-        
+
         // Application URL (after deployment)
         APP_URL = 'http://host.docker.internal'
     }
@@ -152,7 +152,19 @@ pipeline {
             }
         }
         // ====================================================
-        // STAGE 7: BUILD APPLICATION
+        // STAGE 7: OWASP DEPENDENCY CHECK
+        // Scan for known vulnerabilities in dependencies
+        // ====================================================
+        stage('🔍 OWASP Dependency Check') {
+            steps {
+                dependencyCheck(
+            scanPath: '.',
+            reportDir: 'reports/dependency-check'
+        )
+            }
+        }
+        // ====================================================
+        // STAGE 8: BUILD APPLICATION
         // Compile React frontend for production
         // ====================================================
         stage('🏗️ Build Application') {
@@ -173,7 +185,7 @@ pipeline {
             }
         }
         // ====================================================
-        // STAGE 8: DOCKER LOGIN
+        // STAGE 10: DOCKER LOGIN
         // Log in to Docker Hub to push images
         // ====================================================
         stage('🔑 Docker Login') {
@@ -183,7 +195,7 @@ pipeline {
             }
         }
         // ====================================================
-        // STAGE 9: BUILD DOCKER IMAGES
+        // STAGE 11: BUILD DOCKER IMAGES
         // Build Docker images for frontend and backend
         // ====================================================
         stage('🐳 Build Docker Images') {
@@ -216,7 +228,7 @@ pipeline {
             }
         }
         // ====================================================
-        // STAGE 10: TRIVY IMAGE SCAN
+        // STAGE 12: TRIVY IMAGE SCAN
         // Scan Docker images for vulnerabilities
         // ====================================================
         stage('🛡️ Trivy Image Scan') {
@@ -246,7 +258,7 @@ pipeline {
         }
 
         // ====================================================
-        // STAGE 11: TRIVY SECRET SCAN
+        // STAGE 13: TRIVY SECRET SCAN
         // Scan source code for hardcoded secrets
         // ====================================================
         stage('🔑 Trivy Secret Scan') {
@@ -257,7 +269,7 @@ pipeline {
             }
         }
         // ====================================================
-        // STAGE 12: PUSH DOCKER IMAGES
+        // STAGE 14: PUSH DOCKER IMAGES
         // Push Docker images to Docker Hub
         // ====================================================
         stage('📤 Push Docker Images') {
@@ -286,11 +298,8 @@ pipeline {
             }
         }
         // ====================================================
-        // STAGE 13: DEPLOY TO KUBERNETES
+        // STAGE 15: DEPLOY TO KUBERNETES
         // Deploy the application to Kubernetes cluster
-        // ====================================================
-        // ====================================================
-        // STAGE 13: DEPLOY TO KUBERNETES
         // ====================================================
         stage('🚀 Deploy to Kubernetes') {
             steps {
@@ -305,7 +314,7 @@ pipeline {
             }
         }
         // ====================================================
-        // STAGE 14: VERIFY DEPLOYMENT
+        // STAGE 16: VERIFY DEPLOYMENT
         // Verify Kubernetes Deployment
         // ====================================================
         stage('✔️ Verify Deployment') {
@@ -315,7 +324,7 @@ pipeline {
             }
         }
         // ====================================================
-        // STAGE 15: OWASP ZAP DAST SCAN
+        // STAGE 17: OWASP ZAP DAST SCAN
         // Perform Dynamic Application Security Testing (DAST) using OWASP ZAP
         // ====================================================
         stage('🔐 OWASP ZAP DAST Scan') {
@@ -344,7 +353,7 @@ pipeline {
             }
         }
         // ====================================================
-        // STAGE 16: ARCHIVE REPORTS
+        // STAGE 18: ARCHIVE REPORTS
         // ====================================================
         stage('📊 Archive Reports') {
             steps {
