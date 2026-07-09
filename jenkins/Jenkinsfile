@@ -155,14 +155,18 @@ pipeline {
         // // STAGE 7: OWASP DEPENDENCY CHECK
         // // Scan for known vulnerabilities in dependencies
         // // ====================================================
-        // stage('🔍 OWASP Dependency Check') {
-        //     steps {
-        //         runDependencyCheck(
-        //          scanPath: '.',
-        //          reportDir: 'reports/dependency-check'
-        //       )
-        //     }
-        // }
+        stage('🔍 OWASP Dependency Check') {
+            steps {
+                withCredentials([
+                  string(credentialsId: 'NVD_API_KEY', variable: 'NVD_API_KEY')
+                  ]) {
+                    runDependencyCheck(
+                      scanPath: '.',
+                      reportDir: 'reports/dependency-check'
+                    )
+                 }
+            }
+        }
         // ====================================================
         // STAGE 8: BUILD APPLICATION
         // Compile React frontend for production
