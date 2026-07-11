@@ -47,7 +47,8 @@ spec:
   ingressClassName: nginx
 
   rules:
-    - http:
+    - host: localhost 
+      http:
         paths:
 
           # ==================================================
@@ -71,3 +72,4 @@ spec:
                 name: frontend-service
                 port:
                   number: 80
+        
