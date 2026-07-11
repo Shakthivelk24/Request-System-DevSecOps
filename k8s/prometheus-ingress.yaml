@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: prometheus-ingress
+  namespace: request-system
+
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+
+spec:
+  ingressClassName: nginx
+
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /prometheus(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: prometheus-service
+                port:
+                  number: 9090
