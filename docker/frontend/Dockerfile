@@ -3,10 +3,10 @@
 # Uses Node.js to compile the React application
 # ============================================================
 
-# Use Node.js 18 Alpine as the build base
+
 # Alpine = minimal Linux image (~5MB vs ~100MB for full Debian)
 # This reduces attack surface and build time
-FROM node:22-alpine AS builder
+FROM node:22 AS builder
 
 # Set working directory inside the container
 # All subsequent commands run from this directory
