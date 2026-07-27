@@ -6,7 +6,7 @@ import isAuth from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/current", isAuth, getCurrentUser); // Get current authenticated user details 
-// Send a request
+// Send a request for demo
 router.post("/send", isAuth, sendRequest);
 
 // Get all requests received by logged-in user
