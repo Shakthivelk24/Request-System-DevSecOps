@@ -1,12 +1,11 @@
 import request from "supertest";
-import app from "../server.js";
+import app from "../app.js";
 
 describe("Backend API", () => {
   test("GET /api/health should return service status", async () => {
     const response = await request(app).get("/api/health");
 
     expect(response.statusCode).toBe(200);
-
     expect(response.body).toEqual({
       status: "UP",
       service: "backend",
