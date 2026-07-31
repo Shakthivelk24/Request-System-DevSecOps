@@ -55,7 +55,8 @@ spec:
 
             - name: GF_SERVER_SERVE_FROM_SUB_PATH
               value: "true"
-
+            - name: GF_SECURITY_ALLOW_EMBEDDING
+              value: "true"
           volumeMounts:
 
             # Persistent Storage
