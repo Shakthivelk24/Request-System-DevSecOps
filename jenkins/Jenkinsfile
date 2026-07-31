@@ -105,8 +105,9 @@ pipeline {
                     steps {
                         npmTest(
                          'client',
-                         '../coverage/frontend',
-                         'client/junit.xml'
+                         'vitest',
+                         'coverage',
+                         'junit.xml'
                         )
                     }
                 }
@@ -115,8 +116,9 @@ pipeline {
                     steps {
                         npmTest(
                          'server',
-                         '../coverage/backend',
-                         'server/junit.xml'
+                         'jest',
+                         'coverage',
+                         'junit.xml'
                         )
                     }
                 }
@@ -130,14 +132,15 @@ pipeline {
             steps {
                 customLog('Running SonarQube analysis...')
                 sonarqubeScan(
-                    scannerName: 'SonarScanner',
-                    sonarServer: 'SonarQube',
-                    projectKey: "$SONAR_PROJECT_KEY",
-                    projectName: "$APP_NAME",
-                    projectVersion: "$APP_VERSION",
-                    sources: 'client/src,server',
-                    exclusions: '**/node_modules/**,**/dist/**,**/coverage/**'
-                )
+                  scannerName: 'SonarScanner',
+                  sonarServer: 'SonarQube',
+                  projectKey: SONAR_PROJECT_KEY,
+                  projectName: APP_NAME,
+                  projectVersion: APP_VERSION,
+                  sources: 'client/src,server',
+                  exclusions: '**/node_modules/**,**/dist/**',
+                  jsCoverage: 'client/coverage/lcov.info'
+               )
                 customLog('SonarQube analysis submitted')
             }
         }
