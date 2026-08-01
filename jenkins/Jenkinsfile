@@ -138,7 +138,7 @@ pipeline {
                   projectName: APP_NAME,
                   projectVersion: APP_VERSION,
                   sources: 'client/src,server',
-                  exclusions: '**/node_modules/**,**/dist/**',
+                  exclusions: '**/node_modules/**,**/dist/**,**/coverage/**,**/lcov-report/**',
                   jsCoverage: 'client/coverage/lcov.info'
                )
                 customLog('SonarQube analysis submitted')
