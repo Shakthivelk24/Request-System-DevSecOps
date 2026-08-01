@@ -10,12 +10,14 @@ export default {
   coverageReporters: ["text", "lcov", "html"],
 
   collectCoverageFrom: [
-    "**/*.js",
-    "!node_modules/**",
-    "!coverage/**",
-    "!jest.config.js"
-  ],
-
+  "**/*.js",
+  "!server.js",
+  "!config/db.js",
+  "!config/token.js",
+  "!node_modules/**",
+  "!coverage/**",
+  "!jest.config.js",
+],
   testMatch: [
     "**/?(*.)+(spec|test).js"
   ]
