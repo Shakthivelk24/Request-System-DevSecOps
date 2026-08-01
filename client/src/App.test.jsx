@@ -1,7 +1,18 @@
-import { describe, it, expect } from "vitest";
+import { render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { test, expect } from "vitest";
 
-describe("App", () => {
-  it("should pass", () => {
-    expect(true).toBe(true);
-  });
+import App from "./App";
+import { UserDataProvider } from "../context/UserContext";
+
+test("renders App", () => {
+  const { container } = render(
+    <UserDataProvider>
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    </UserDataProvider>
+  );
+
+  expect(container).toBeTruthy();
 });
