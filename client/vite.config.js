@@ -13,15 +13,21 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: "./vitest.setup.js",
 
-    coverage: {
-        provider: "v8",
-        reporter: ["text", "html", "lcov"],
-        reportsDirectory: "coverage",
-        include: ["src/**/*.{js,jsx}"],
-        exclude: [
-            "src/**/*.test.{js,jsx}",
-            "src/main.jsx"
-        ]
-    }
+   coverage: {
+    provider: "v8",
+    reporter: ["text", "html", "lcov"],
+    reportsDirectory: "coverage",
+
+    all: true,
+
+    include: ["src/**/*.{js,jsx}"],
+
+    exclude: [
+    "src/**/*.test.{js,jsx}",
+    "src/main.jsx",
+    "src/assets/**",
+    "src/**/*.css"
+]
+}
 },
 });
