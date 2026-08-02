@@ -198,4 +198,117 @@ describe("Dashboard", () => {
       expect(mockNavigate).toHaveBeenCalledWith("/");
     });
   });
+  test("shows alert when send request fails", async () => {
+  mockAxios.post.mockRejectedValueOnce({
+    response: {
+      data: {
+        error: "Failed to send request",
+      },
+    },
+  });
+
+  const alertSpy = vi
+    .spyOn(window, "alert")
+    .mockImplementation(() => {});
+
+  renderDashboard();
+
+  fireEvent.change(screen.getByPlaceholderText("Receiver Email"), {
+    target: { value: "user@test.com" },
+  });
+
+  fireEvent.change(screen.getByPlaceholderText("Message"), {
+    target: { value: "Hello" },
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: "Send" }));
+
+  await waitFor(() => {
+    expect(alertSpy).toHaveBeenCalledWith(
+      "Failed to send request"
+    );
+  });
+
+  alertSpy.mockRestore();
 });
+
+test("shows alert when updating request status fails", async () => {
+  mockAxios.put.mockRejectedValueOnce(new Error("Server Error"));
+
+  const alertSpy = vi
+    .spyOn(window, "alert")
+    .mockImplementation(() => {});
+
+  renderDashboard();
+
+  const acceptButton = await screen.findByText("Accept");
+
+  fireEvent.click(acceptButton);
+
+  await waitFor(() => {
+    expect(alertSpy).toHaveBeenCalledWith("Update failed");
+  });
+
+  alertSpy.mockRestore();
+});
+
+test("shows alert when logout fails", async () => {
+  mockAxios.get.mockImplementation((url) => {
+    if (url === "/api/users/logout") {
+      return Promise.reject(new Error("Logout Failed"));
+    }
+
+    if (url === "/api/requests/sent") {
+      return Promise.resolve({ data: [] });
+    }
+
+    if (url === "/api/requests/received") {
+      return Promise.resolve({ data: [] });
+    }
+
+    return Promise.resolve({ data: [] });
+  });
+
+  const alertSpy = vi
+    .spyOn(window, "alert")
+    .mockImplementation(() => {});
+
+  renderDashboard();
+
+  fireEvent.click(
+    screen.getByRole("button", { name: "Logout" })
+  );
+
+  await waitFor(() => {
+    expect(alertSpy).toHaveBeenCalledWith("Logout failed");
+  });
+
+  alertSpy.mockRestore();
+});
+test("shows default error message when send request has no error response", async () => {
+  mockAxios.post.mockRejectedValueOnce(new Error("Network Error"));
+
+  const alertSpy = vi
+    .spyOn(window, "alert")
+    .mockImplementation(() => {});
+
+  renderDashboard();
+
+  fireEvent.change(screen.getByPlaceholderText("Receiver Email"), {
+    target: { value: "user@test.com" },
+  });
+
+  fireEvent.change(screen.getByPlaceholderText("Message"), {
+    target: { value: "Hello" },
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: "Send" }));
+
+  await waitFor(() => {
+    expect(alertSpy).toHaveBeenCalledWith("Failed to send");
+  });
+
+  alertSpy.mockRestore();
+});
+});
+
