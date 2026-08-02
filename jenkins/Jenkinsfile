@@ -125,8 +125,8 @@ pipeline {
             }
         }
         stage('Verify Coverage Files') {
-    steps {
-        bat '''
+            steps {
+                bat '''
         if exist client\\coverage\\lcov.info (
             echo Frontend LCOV found
         ) else (
@@ -139,8 +139,8 @@ pipeline {
             echo Backend LCOV NOT FOUND
         )
         '''
-    }
-}
+            }
+        }
         // ====================================================
         // STAGE 5: STATIC CODE ANALYSIS
         // Run SonarQube analysis on the codebase
@@ -148,16 +148,28 @@ pipeline {
         stage('🔍 Static Code Analysis') {
             steps {
                 customLog('Running SonarQube analysis...')
+
                 sonarqubeScan(
-                  scannerName: 'SonarScanner',
-                  sonarServer: 'SonarQube',
-                  projectKey: SONAR_PROJECT_KEY,
-                  projectName: APP_NAME,
-                  projectVersion: APP_VERSION,
-                  sources: 'client/src,server',
-                  exclusions: '**/node_modules/**,**/dist/**,**/coverage/**,**/lcov-report/**',
-                  jsCoverage: 'client/coverage/lcov.info,server/coverage/lcov.info'
-               )
+            scannerName: 'SonarScanner',
+            sonarServer: 'SonarQube',
+            projectKey: SONAR_PROJECT_KEY,
+            projectName: APP_NAME,
+            projectVersion: APP_VERSION,
+            sources: 'client/src,server',
+            exclusions: '''
+                **/node_modules/**,
+                **/dist/**,
+                **/coverage/**,
+                **/lcov-report/**,
+                **/*.test.js,
+                **/*.test.jsx,
+                **/*.spec.js,
+                **/*.spec.jsx,
+                server/tests/**
+            '''.trim().replaceAll('\\s+', ''),
+            jsCoverage: 'client/coverage/lcov.info,server/coverage/lcov.info'
+        )
+
                 customLog('SonarQube analysis submitted')
             }
         }
