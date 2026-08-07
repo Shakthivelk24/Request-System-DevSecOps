@@ -12,7 +12,7 @@ import { useContext } from "react";
 vi.mock("axios", () => ({
   default: {
     defaults: {
-      baseURL: "http://localhost:5000",
+      baseURL: "/api",
     },
     get: vi.fn(),
   },
@@ -61,7 +61,7 @@ describe("UserDataProvider", () => {
     );
 
     expect(getByTestId("baseurl").textContent).toBe(
-      "http://localhost:5000"
+      "/api"
     );
   });
 
@@ -80,7 +80,7 @@ describe("UserDataProvider", () => {
 
     await waitFor(() => {
       expect(axios.get).toHaveBeenCalledWith(
-        "http://localhost:5000/api/requests/current",
+        "/api/requests/current",
         {
           withCredentials: true,
         }

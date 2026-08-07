@@ -13,7 +13,7 @@ export const UserDataProvider = ({ children }) => {
   const handleCurrentUser = async () => {
     try {
       const result = await axios.get(
-        `${axios.defaults.baseURL}/api/requests/current`,
+        `${axios.defaults.baseURL}/requests/current`,
         {
           withCredentials: true,
         },
