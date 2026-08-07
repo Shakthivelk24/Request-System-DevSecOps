@@ -94,7 +94,7 @@ expect(
 
     await waitFor(() => {
       expect(mockPost).toHaveBeenCalledWith(
-        "/api/users/login",
+        "/users/login",
         {
           email: "test@example.com",
           password: "password123",

@@ -107,7 +107,7 @@ expect(
 
     await waitFor(() => {
       expect(mockPost).toHaveBeenCalledWith(
-        "/api/users/register",
+        "/users/register",
         {
           username: "john",
           email: "john@test.com",

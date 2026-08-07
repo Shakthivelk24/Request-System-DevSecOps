@@ -27,7 +27,7 @@ describe("Dashboard", () => {
     vi.clearAllMocks();
 
     mockAxios.get.mockImplementation((url) => {
-      if (url === "/api/requests/sent") {
+      if (url === "/requests/sent") {
         return Promise.resolve({
           data: [
             {
@@ -40,7 +40,7 @@ describe("Dashboard", () => {
         });
       }
 
-      if (url === "/api/requests/received") {
+      if (url === "/requests/received") {
         return Promise.resolve({
           data: [
             {
@@ -53,7 +53,7 @@ describe("Dashboard", () => {
         });
       }
 
-      if (url === "/api/users/logout") {
+      if (url === "/users/logout") {
         return Promise.resolve({});
       }
 
@@ -116,7 +116,7 @@ describe("Dashboard", () => {
 
     await waitFor(() => {
       expect(mockAxios.post).toHaveBeenCalledWith(
-        "/api/requests/send",
+        "/requests/send",
         {
           receiverEmail: "user@test.com",
           message: "Testing request",
@@ -137,7 +137,7 @@ describe("Dashboard", () => {
 
     await waitFor(() => {
       expect(mockAxios.put).toHaveBeenCalledWith(
-        "/api/requests/status/2",
+        "/requests/status/2",
         { status: "accepted" },
         { withCredentials: true }
       );
@@ -153,7 +153,7 @@ describe("Dashboard", () => {
 
     await waitFor(() => {
       expect(mockAxios.put).toHaveBeenCalledWith(
-        "/api/requests/status/2",
+        "/requests/status/2",
         { status: "rejected" },
         { withCredentials: true }
       );
@@ -171,7 +171,7 @@ describe("Dashboard", () => {
 
     await waitFor(() => {
       expect(mockAxios.get).toHaveBeenCalledWith(
-        "/api/users/logout",
+        "/users/logout",
         {
           withCredentials: true,
         }
@@ -254,15 +254,15 @@ test("shows alert when updating request status fails", async () => {
 
 test("shows alert when logout fails", async () => {
   mockAxios.get.mockImplementation((url) => {
-    if (url === "/api/users/logout") {
+    if (url === "/users/logout") {
       return Promise.reject(new Error("Logout Failed"));
     }
 
-    if (url === "/api/requests/sent") {
+    if (url === "/requests/sent") {
       return Promise.resolve({ data: [] });
     }
 
-    if (url === "/api/requests/received") {
+    if (url === "/requests/received") {
       return Promise.resolve({ data: [] });
     }
 

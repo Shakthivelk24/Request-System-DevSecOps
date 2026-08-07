@@ -15,10 +15,10 @@ export default function Dashboard() {
   // Fetch Requests
   const loadData = async () => {
     try {
-      const sentRes = await axios.get("/api/requests/sent", {
+      const sentRes = await axios.get("/requests/sent", {
         withCredentials: true,
       });
-      const recRes = await axios.get("/api/requests/received", {
+      const recRes = await axios.get("/requests/received", {
         withCredentials: true,
       });
 
@@ -40,7 +40,7 @@ export default function Dashboard() {
 
     try {
       await axios.post(
-        "/api/requests/send",
+        "/requests/send",
         {
           receiverEmail: receiverId,
           message,
@@ -63,7 +63,7 @@ export default function Dashboard() {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        `/api/requests/status/${id}`,
+        `/requests/status/${id}`,
         { status }, // ✅ request body
         { withCredentials: true }, // ✅ config
       );
@@ -78,7 +78,7 @@ export default function Dashboard() {
   // ✅ Logout Function
   const handleLogout = async () => {
     try {
-      await axios.get("/api/users/logout", { withCredentials: true }); // backend clears cookie
+      await axios.get("/users/logout", { withCredentials: true }); // backend clears cookie
       navigate("/"); // redirect to login
     } catch {
       alert("Logout failed");

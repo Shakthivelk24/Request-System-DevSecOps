@@ -19,7 +19,7 @@ export default function Register() {
     e.preventDefault();
 
     try {
-         const res = await axios.post("/api/users/register", {
+         const res = await axios.post("/users/register", {
           username,
           email,
           password,
