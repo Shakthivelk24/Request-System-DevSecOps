@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL ||"http://localhost:5000";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || "/api"; // Set the base URL for axios requests
 
 // Create a context for user data
 export const userDataContext = createContext();
