@@ -80,7 +80,7 @@ describe("UserDataProvider", () => {
 
     await waitFor(() => {
       expect(axios.get).toHaveBeenCalledWith(
-        "/api/requests/current",
+        "/requests/current",
         {
           withCredentials: true,
         }
