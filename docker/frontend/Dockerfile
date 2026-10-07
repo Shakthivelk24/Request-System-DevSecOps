@@ -45,6 +45,9 @@ RUN npm run build
 # Nginx Alpine is extremely small (~23MB) and production-hardened
 FROM nginx:alpine AS production
 
+RUN apk update && \
+    apk upgrade
+
 # Copy custom Nginx configuration
 # Controls how Nginx serves the React SPA (Single Page App)
 COPY docker/frontend/nginx.conf /etc/nginx/conf.d/default.conf
@@ -57,7 +60,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Add labels for image metadata and traceability
 LABEL maintainer="devops-team"
 LABEL version="1.0"
-LABEL description="Request System - Frontend"
+LABEL description="RequestSystem - Frontend"
 
 # Document that Nginx serves on port 80
 # This is metadata only - port mapping happens in docker-compose/kubernetes
