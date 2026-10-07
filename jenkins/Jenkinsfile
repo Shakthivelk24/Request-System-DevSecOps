@@ -391,12 +391,12 @@ pipeline {
         // ====================================================
         // STAGE 18: ARCHIVE REPORTS
         // ====================================================
-        stage('📊 Archive Reports') {
-            steps {
-                customLog('Archiving reports...')
-                archiveReports()
-            }
-        }
+        // stage('📊 Archive Reports') {
+        //     steps {
+        //         customLog('Archiving reports...')
+        //         archiveReports()
+        //     }
+        // }
     }
     post {
         // ====================================================
